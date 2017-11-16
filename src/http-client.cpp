@@ -15,6 +15,7 @@ public:
   HttpClientPrivate(HttpClient *cl, std::shared_ptr<uvw::Loop> l,
                     const HttpRequestOptions &r)
       : loop(l), req(r), handle(loop->resource<uvw::TcpHandle>()), client(cl) {
+
     http_parser_init(&parser, HTTP_RESPONSE);
     http_parser_settings_init(&settings);
 
@@ -57,7 +58,7 @@ public:
       throw "Invalid method";
     }
 
-    stream << " " << req.path << " HTTP/1.1\r\n";
+    stream << " " << req.url.path() << " HTTP/1.1\r\n";
 
     for (auto kv : req.header) {
       stream << kv.first << ": " << kv.second << "\r\n";
@@ -74,9 +75,6 @@ public:
         req.data.size() > 0) {
       stream << req.data;
     }
-    /*if (req.method() == channel::Request::Post) {
-      stream << req.body();
-    }*/
 
     return stream.str();
   }
@@ -160,7 +158,7 @@ void HttpClient::connect() {
 
   });
 
-  d->handle->connect(d->req.hostname, d->req.port);
+  d->handle->connect(d->req.url.host(), d->req.url.port());
 }
 
 void HttpClient::close() { d->handle->close(); }

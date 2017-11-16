@@ -1,6 +1,6 @@
 #pragma once
+#include <ostream>
 #include <string>
-
 namespace uvw {
 
 namespace http {
@@ -33,6 +33,8 @@ public:
   void set_fragment(const std::string &fragment);
 
   bool valid() const;
+
+  friend std::ostream &operator<<(std::ostream &os, const URL &dt);
 
 private:
   std::string m_host;

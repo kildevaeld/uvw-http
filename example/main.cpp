@@ -6,8 +6,9 @@ using namespace uvw::http;
 int main() {
   std::cout << "Hello, World" << std::endl;
 
-  URL url("http://localhost:5000");
+  URL url("http://localhost:5000/testmig");
 
+  std::cout << url << std::endl;
   /*auto loop = uvw::Loop::getDefault();
 
   Header header;

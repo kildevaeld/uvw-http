@@ -1,4 +1,5 @@
 #pragma once
+#include "http-url.hpp"
 #include <map>
 #include <string>
 
@@ -15,10 +16,14 @@ struct CaseInsensitiveCompare {
 using Header = std::map<std::string, std::string, CaseInsensitiveCompare>;
 
 struct HttpRequestOptions {
+
+public:
+  HttpRequestOptions() {}
+  HttpRequestOptions(Method m, const URL &u, const Header &h = Header())
+      : method(m), url(u), header(h) {}
+
   Method method = Get;
-  std::string path;
-  unsigned int port;
-  std::string hostname;
+  URL url;
   Header header;
   std::string data;
 };

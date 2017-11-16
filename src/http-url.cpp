@@ -5,10 +5,11 @@ namespace uvw {
 
 namespace http {
 
-std::string get_field(http_parser_url *parser, int field) {
-  if ((parser.field_set & (1 << field)) != 0) {
-    return url.substr(parser.field_data[UF_HOST].off,
-                      parser.field_data[UF_HOST].len);
+std::string get_field(http_parser_url *parser, const std::string &url,
+                      int field) {
+  if ((parser->field_set & (1 << field)) != 0) {
+    return url.substr(parser->field_data[field].off,
+                      parser->field_data[field].len);
   }
   return "";
 }
@@ -29,14 +30,17 @@ bool URL::parse(const std::string &url) {
   }
 
   m_port = (int)parser.port;
-  m_host = get_field(&parser, UF_HOST);
-  m_path = get_field(&parser, UF_PATH);
-  m_protocol = get_field(&parser, UF_SCHEMA);
-  m_query = get_field(&parser, UF_QUERY);
-  m_fragment = get_field(&parser, UF_FRAGMENT);
+  m_host = get_field(&parser, url, UF_HOST);
+  m_path = get_field(&parser, url, UF_PATH);
+  m_protocol = get_field(&parser, url, UF_SCHEMA);
+  m_query = get_field(&parser, url, UF_QUERY);
+  m_fragment = get_field(&parser, url, UF_FRAGMENT);
 
   if (m_port == 0)
     m_port = 80;
+
+  if (m_path.size())
+    m_path = "/";
 
   m_valid = true;
 
@@ -55,13 +59,34 @@ void URL::set_path(const std::string &path) { m_path = path; }
 std::string URL::protocol() const { return m_protocol; }
 void URL::set_protocol(const std::string &protocol) { m_protocol = protocol; }
 
-std::string query() const { return m_query; }
-void set_query(const std::string &query) { m_query = query; }
+std::string URL::query() const { return m_query; }
+void URL::set_query(const std::string &query) { m_query = query; }
 
-std::string fragment() const { return m_fragment; }
-void set_fragment(const std::string &fragment) { m_fragment = fragment; }
+std::string URL::fragment() const { return m_fragment; }
+void URL::set_fragment(const std::string &fragment) { m_fragment = fragment; }
 
 bool URL::valid() const { return m_valid; }
+
+std::ostream &operator<<(std::ostream &os, const URL &u) {
+  if (!u.valid()) {
+    os << "URL(invalid)";
+    return os;
+  }
+  os << "URL(" << u.protocol() << "://" << u.host() << ":" << u.port()
+     << u.path();
+
+  if (u.query().size() > 0) {
+    os << "?" << u.query();
+  }
+  if (u.fragment().size() > 0) {
+    os << "#" << u.fragment();
+  }
+
+  os << ")";
+
+  return os;
+}
+
 } // namespace http
 
 } // namespace uvw
