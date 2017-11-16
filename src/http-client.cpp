@@ -165,15 +165,13 @@ void HttpClient::connect() {
 
 void HttpClient::close() { d->handle->close(); }
 
-
-
 HttpClient::~HttpClient() {}
 
 std::shared_ptr<HttpClient> HttpClient::get(const std::string &url,
                                             const Header &header) {}
-std::shared_ptr<HttpClient>
-HttpClient::post(const std::string &url, const Header &header ,
-                 const std::string body) {}
+std::shared_ptr<HttpClient> HttpClient::post(const std::string &url,
+                                             const Header &header,
+                                             const std::string body) {}
 
 } // namespace http
 

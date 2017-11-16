@@ -1,10 +1,12 @@
 #include <iostream>
 #include <uvw-http/http-client.hpp>
-
+#include <uvw-http/http-url.hpp>
 using namespace uvw::http;
 
 int main() {
   std::cout << "Hello, World" << std::endl;
+
+  URL url("http://localhost:5000");
 
   auto loop = uvw::Loop::getDefault();
 
