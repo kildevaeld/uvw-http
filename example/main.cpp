@@ -8,7 +8,7 @@ int main() {
 
   URL url("http://localhost:5000");
 
-  auto loop = uvw::Loop::getDefault();
+  /*auto loop = uvw::Loop::getDefault();
 
   Header header;
   header["Content-Type"] = "application/json";
@@ -37,7 +37,7 @@ int main() {
 
   request->connect();
 
-  loop->run();
+  loop->run();*/
 
   return 0;
 }

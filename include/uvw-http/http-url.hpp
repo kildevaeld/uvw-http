@@ -12,6 +12,8 @@ public:
   URL();
   ~URL();
 
+  bool parse(const std::string &url);
+
   int port() const;
   void set_port(int port);
 
@@ -24,6 +26,12 @@ public:
   std::string protocol() const;
   void set_protocol(const std::string &protocol);
 
+  std::string query() const;
+  void set_query(const std::string &query);
+
+  std::string fragment() const;
+  void set_fragment(const std::string &fragment);
+
   bool valid() const;
 
 private:
@@ -31,6 +39,8 @@ private:
   int m_port;
   std::string m_path;
   std::string m_protocol;
+  std::string m_query;
+  std::string m_fragment;
   bool m_valid = false;
 };
 
