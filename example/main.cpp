@@ -4,14 +4,29 @@
 using namespace uvw::http;
 
 int main() {
-  std::cout << "Hello, World" << std::endl;
+  auto loop = uvw::Loop::getDefault();
 
-  URL url("http://localhost:5000/testmig");
+  HttpRequestOptions req(Post, URL("http://localhost:5000/auth/login"));
+  req.header["Content-Type"] = "application/json";
+  req.data = "{\"email\":\"test@gmail.com\",\"password\":\"password\"}";
 
-  std::cout << url << std::endl;
-  /*auto loop = uvw::Loop::getDefault();
+  auto client = new HttpClient(loop, req);
 
-  Header header;
+  client->once<uvw::ErrorEvent>([](const auto &event, auto &) {
+    std::cout << event.what() << std::endl;
+  });
+
+  client->on<uvw::DataEvent>([](const auto &event, auto &) {
+    std::cout << std::string(event.data.get(), event.length) << std::endl;
+  });
+
+  client->on<uvw::CloseEvent>(
+      [](const auto &event, auto &) { std::cout << "Close" << std::endl; });
+
+  client->connect();
+
+  loop->run();
+  /*Header header;
   header["Content-Type"] = "application/json";
 
   auto request = new uvw::http::HttpClient(
@@ -32,7 +47,7 @@ int main() {
     std::cout << std::endl;
   });
 
-  request->once<uvw::DataEvent>([](auto &event, auto &reader) {
+  request->once<uvw::DataEvent>([](auto &event, auto &reader) {z
     std::cout << std::string(event.data.get(), event.length) << std::endl;
   });
 

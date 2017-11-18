@@ -112,7 +112,6 @@ private:
     auto req = static_cast<HttpClientPrivate *>(parser->data);
     auto chunk = new char[len];
     std::memcpy(chunk, data, len);
-    std::cout << std::string(data, len) << std::endl;
     req->client->publish(DataEvent(std::unique_ptr<char[]>(chunk), len));
     return 0;
   }
@@ -158,7 +157,7 @@ void HttpClient::connect() {
 
   });
 
-  d->handle->connect(d->req.url.host(), d->req.url.port());
+    d->handle->connect(d->req.url.host(), d->req.url.port());
 }
 
 void HttpClient::close() { d->handle->close(); }

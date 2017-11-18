@@ -19,8 +19,7 @@ struct HttpRequestOptions {
 
 public:
   HttpRequestOptions() {}
-  HttpRequestOptions(Method m, const URL &u, const Header &h = Header())
-      : method(m), url(u), header(h) {}
+  HttpRequestOptions(Method m, const URL &u, const Header &h = Header());
 
   Method method = Get;
   URL url;

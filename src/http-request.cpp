@@ -12,6 +12,10 @@ bool CaseInsensitiveCompare::operator()(const std::string &a,
                                                std::tolower(bc);
                                       });
 }
+
+HttpRequestOptions::HttpRequestOptions(Method m, const URL &u, const Header &h)
+    : method(m), url(u), header(h) {}
+
 } // namespace http
 
 } // namespace uvw

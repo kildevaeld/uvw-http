@@ -20,6 +20,7 @@ URL::URL() {}
 URL::~URL() {}
 
 bool URL::parse(const std::string &url) {
+
   http_parser_url parser;
   http_parser_url_init(&parser);
 
@@ -39,7 +40,7 @@ bool URL::parse(const std::string &url) {
   if (m_port == 0)
     m_port = 80;
 
-  if (m_path.size())
+  if (m_path.size() == 0)
     m_path = "/";
 
   m_valid = true;
