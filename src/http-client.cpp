@@ -167,7 +167,13 @@ void HttpClient::connect() {
 
 void HttpClient::close() { d->handle->close(); }
 
-HttpClient::~HttpClient() {}
+uvw::Loop *HttpClient::loop() const {
+  return d->loop.get();
+}
+
+HttpClient::~HttpClient() {
+  d->handle->close();
+}
 
 void HttpClient::deleteLater() {
   auto handle = d->loop->resource<uvw::AsyncHandle>();

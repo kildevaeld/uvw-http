@@ -30,6 +30,9 @@ public:
   void connect();
   void close();
 
+
+  uvw::Loop *loop() const;
+
   void deleteLater();
 
   static std::shared_ptr<HttpClient> get(const std::string &url,
