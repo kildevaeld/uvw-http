@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <uvw-http/http-client.hpp>
+#include <uvw/async.hpp>
 #include <uvw/tcp.hpp>
 
 namespace uvw {
@@ -157,12 +158,26 @@ void HttpClient::connect() {
 
   });
 
-    d->handle->connect(d->req.url.host(), d->req.url.port());
+  d->handle->once<uvw::CloseEvent>(
+      [this](auto &e, auto &) { this->publish(e); });
+
+  d->handle->connect(d->req.url.host(), d->req.url.port());
 }
 
 void HttpClient::close() { d->handle->close(); }
 
 HttpClient::~HttpClient() {}
+
+void HttpClient::deleteLater() {
+  auto handle = d->loop->resource<uvw::AsyncHandle>();
+
+  handle->on<uvw::AsyncEvent>([this](const auto &, auto &hndl) {
+    delete this;
+    hndl.close();
+  });
+
+  handle->send();
+}
 
 std::shared_ptr<HttpClient> HttpClient::get(const std::string &url,
                                             const Header &header) {}

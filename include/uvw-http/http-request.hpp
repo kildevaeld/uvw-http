@@ -7,7 +7,7 @@ namespace uvw {
 
 namespace http {
 
-enum Method { Get = 1, Post, Put, Patch, Delete, Option, Head };
+enum Method { Get, Post, Put, Patch, Delete, Option, Head };
 
 struct CaseInsensitiveCompare {
   bool operator()(const std::string &a, const std::string &b) const noexcept;

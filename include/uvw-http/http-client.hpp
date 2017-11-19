@@ -30,6 +30,8 @@ public:
   void connect();
   void close();
 
+  void deleteLater();
+
   static std::shared_ptr<HttpClient> get(const std::string &url,
                                          const Header &header = Header());
   static std::shared_ptr<HttpClient>
