@@ -9,4 +9,4 @@ set(SOURCES
 
 
 add_library(uvw-http ${SOURCES})
-target_link_libraries(uvw-http)
+target_link_libraries(uvw-http uv)

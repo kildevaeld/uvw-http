@@ -4,6 +4,7 @@
 #include <uvw-http/http-client.hpp>
 #include <uvw/async.hpp>
 #include <uvw/tcp.hpp>
+#include <cstring>
 
 namespace uvw {
 
