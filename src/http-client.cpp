@@ -1,10 +1,9 @@
+#include <cstring>
 #include <http_parser.h>
-#include <iostream>
 #include <sstream>
 #include <uvw-http/http-client.hpp>
 #include <uvw/async.hpp>
 #include <uvw/tcp.hpp>
-#include <cstring>
 
 namespace uvw {
 
@@ -167,13 +166,9 @@ void HttpClient::connect() {
 
 void HttpClient::close() { d->handle->close(); }
 
-uvw::Loop *HttpClient::loop() const {
-  return d->loop.get();
-}
+uvw::Loop *HttpClient::loop() const { return d->loop.get(); }
 
-HttpClient::~HttpClient() {
-  d->handle->close();
-}
+HttpClient::~HttpClient() { d->handle->close(); }
 
 void HttpClient::deleteLater() {
   auto handle = d->loop->resource<uvw::AsyncHandle>();
